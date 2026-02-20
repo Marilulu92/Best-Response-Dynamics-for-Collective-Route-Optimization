@@ -48,11 +48,11 @@ The framework generates:
 ## Verify installation
 
 Run in terminal:
-
+```bash
 netconvert --help  
 sumo --help  
 sumo-gui --help  
-
+```
 If not recognized → add SUMO /bin to PATH.
 
 ---
@@ -71,9 +71,9 @@ map.osm
 ## Step 2 — Convert to SUMO network
 
 Run:
-
+```bash
 netconvert --osm-files map.osm -o map.net.xml
-
+```
 This generates:
 
 map.net.xml
@@ -112,10 +112,10 @@ Format:
 origin_junction destination_junction
 
 Example:
-
+```bash
 2746068817 2745809412  
 7286566917 1795001889  
-
+```
 These IDs correspond to SUMO junctions.
 
 ---
@@ -123,26 +123,26 @@ These IDs correspond to SUMO junctions.
 # 🔎 How to Obtain Junction IDs
 
 Create file view_map.sumo.cfg with:
-
+```bash
 <configuration>
   <input>
     <net-file value="map.net.xml"/>
   </input>
 </configuration>
-
+```
 Run:
-
+```bash
 sumo-gui view_map.sumo.cfg
-
+```
 Then:
 View → Junctions → Show IDs  
 Copy IDs into od_pairs.txt
 
 ---
 
-# 🚀 Run Algorithm (ONE LINE)
+# 🚀 Run Algorithm
 
-python cos_integrado_tableIII_veh_per_od_routes_all.py --net map.net.xml --od od_pairs.txt --veh_per_od 1 --out results --write_routes
+python cos.py --net [map.net.xml] --od [od_pairs.txt] --veh_per_od [1] --out [results] --write_routes
 
 ---
 ## ⚙️ Parameters
@@ -159,6 +159,10 @@ python cos_integrado_tableIII_veh_per_od_routes_all.py --net map.net.xml --od od
 | `--seed`         | reproducibility seed (optional)          |
 
 ---
+Example:
+```bash
+python cos.py --net map.net.xml --od od_pairs.txt --veh_per_od 1 --out results --write_routes
+```
 # 📊 Outputs
 
 results/  
@@ -186,10 +190,10 @@ mapB.sumo.cfg
 mapD.sumo.cfg  
 
 Run:
-
+```bash
 sumo-gui mapB.sumo.cfg  
 sumo-gui mapD.sumo.cfg  
-
+```
 ---
 
 # 📚 Research Context
