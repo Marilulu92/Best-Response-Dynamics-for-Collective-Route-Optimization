@@ -1,76 +1,77 @@
-🚦 Best-Response-Dynamics-for-Collective-Route-Optimization
+# 🚦 Best-Response-Dynamics-for-Collective-Route-Optimization
 
-IEEE LATAM Q1 Repository (Official Experimental Implementation)
+**Manuscript:** IEEE Latin America Transactions  
+**Paper:** *Best Response Dynamics for Collective Route Optimization*
 
-Manuscript: IEEE Latin America Transactions
-Paper: Best Response Dynamics for Collective Route Optimization
+**Authors**  
+Maria de Lourdes Angulo-Dominguez  
+Pedro Mejía-Alvarez  
+Rolando Menchaca-Mendez  
+Arturo Yee-Rendon  
 
-Authors
-Maria de Lourdes Angulo-Dominguez
-Pedro Mejía-Alvarez
-Rolando Menchaca-Mendez
-Arturo Yee-Rendon
+📩 For questions or replication of results: lourdes.angulo@cinvestav.mx  
 
-For questions or replication of results:
-📩 lourdes.angulo@cinvestav.mx
+---
 
-📌 Project Overview
+# 📌 Project Overview
 
-This repository contains the official experimental implementation of the research paper:
+This repository contains the official experimental implementation of:
 
-Best Response Dynamics for Collective Route Optimization
+**Best Response Dynamics for Collective Route Optimization**
 
-The system implements a Collective Optimization Scheme (COS) for urban routing based on:
+It implements a Collective Optimization Scheme (COS) for urban routing integrating:
 
-Best Response Dynamics (BRD)
-
-Dijkstra shortest-path routing
-
-Congestion-aware cost model
-
-Nash equilibrium search
-
-SUMO simulation integration
+- Best Response Dynamics (BRD)
+- Dijkstra shortest-path routing
+- Congestion-aware cost model
+- Nash equilibrium search
+- SUMO simulation integration
 
 The framework generates:
 
-Individual routing (selfish/Dijkstra)
+- Individual routing (selfish baseline)
+- Collaborative routing (BRD equilibrium)
+- Multiple congestion scenarios (10%–100%)
+- Table III results (IEEE LATAM)
+- SUMO route files for visualization
 
-Collaborative routing (BRD equilibrium)
+---
 
-Congestion scenarios (10%–100%)
+# 🧰 Requirements
 
-Table III results for IEEE LATAM
+## Software
 
-Route files ready for SUMO simulation
+- Python 3.9+
+- SUMO Simulator
+- netconvert (included in SUMO)
 
-🧰 Requirements
-Software
+## Verify installation
 
-Python 3.9+
+Run in terminal:
 
-SUMO simulator
-
-netconvert (included with SUMO)
-
-Verify installation
-netconvert --help
-sumo --help
-sumo-gui --help
+netconvert --help  
+sumo --help  
+sumo-gui --help  
 
 If not recognized → add SUMO /bin to PATH.
 
-🗺️ Map Preparation (OpenStreetMap → SUMO)
-Step 1 — Download map
+---
 
-Download from OpenStreetMap:
+# 🗺️ Map Preparation (OpenStreetMap → SUMO)
 
-https://www.openstreetmap.org
+## Step 1 — Download map
+
+Download from:  
+https://www.openstreetmap.org  
 
 Export as:
 
 map.osm
-Step 2 — Convert to SUMO network
+
+## Step 2 — Convert to SUMO network
+
+Run:
+
 netconvert --osm-files map.osm -o map.net.xml
 
 This generates:
@@ -78,28 +79,33 @@ This generates:
 map.net.xml
 
 Required for:
+- running algorithm
+- SUMO simulation
 
-algorithm
+---
 
-SUMO simulation
+# 🗂️ Folder Structure (per map)
 
-🗂️ Recommended Folder Structure (per map)
-
-Each map must have its own folder:
-
-experiments/
- ├── map_gdl/
+experiments/  
+ ├── map_firstmap/  
+ │    ├── cos_integrado.py  
+ │    ├── map.osm  
+ │    ├── map.net.xml  
+ │    ├── od_pairs.txt  
+ │    └── results/  
+ ├── map_secondmap/  
+ │    ├── cos_integrado.py  
  │    ├── map.osm
- │    ├── map.net.xml
- │    ├── od_pairs.txt
- │    └── results/
- ├── map_cdmx/
- └── map_mty/
-📍 OD Pairs File
+ │    ├── map.net.xml  
+ │    ├── od_pairs.txt  
+ │    └── results/  
+ └──   
 
-File:
+---
 
-od_pairs.txt
+# 📍 OD Pairs File
+
+File: od_pairs.txt  
 
 Format:
 
@@ -107,16 +113,17 @@ origin_junction destination_junction
 
 Example:
 
-2746068817 2745809412
-7286566917 1795001889
+2746068817 2745809412  
+7286566917 1795001889  
 
-These IDs correspond to junctions from the SUMO map.
+These IDs correspond to SUMO junctions.
 
-🔎 How to Obtain Junction IDs (Manual Method)
+---
 
-Create:
+# 🔎 How to Obtain Junction IDs
 
-view_map.sumo.cfg
+Create file view_map.sumo.cfg with:
+
 <configuration>
   <input>
     <net-file value="map.net.xml"/>
@@ -128,113 +135,71 @@ Run:
 sumo-gui view_map.sumo.cfg
 
 Then:
-
-View → Junctions
-
-Show IDs
-
+View → Junctions → Show IDs  
 Copy IDs into od_pairs.txt
 
-(This is currently manual for this research stage.)
+---
 
-🚀 Run Algorithm (ONE LINE COMMAND)
+# 🚀 Run Algorithm (ONE LINE)
+
 python cos_integrado_tableIII_veh_per_od_routes_all.py --net map.net.xml --od od_pairs.txt --veh_per_od 1 --out results --write_routes
-⚙️ Parameters
-Parameter	Meaning
---net	SUMO network file
---od	OD pairs file
---veh_per_od	vehicles per OD pair
---out	output folder
---write_routes	generate SUMO routes
---table_pcts	congestion levels
---max_iters (Optional)	BRD max iterations
---seed (Optional)	reproducibility
 
-Example:
+---
+## ⚙️ Parameters
 
- python cos_integrado_tableIII_veh_per_od_routes_all.py --net map.net.xml --od od_pairs.txt --veh_per_od 5 --out results --write_routes  
+| Parameter        | Description                              | 
+|------------------|------------------------------------------|
+| `--net`          | SUMO network file                        |
+| `--od`           | OD pairs file                            |
+| `--veh_per_od`   | vehicles per OD pair                     |
+| `--out`          | output folder                            |
+| `--write_routes` | generate SUMO routes                     |
+| `--table_pcts`   | congestion levels                        |
+| `--max_iters`    | max BRD iterations (optional)            |
+| `--seed`         | reproducibility seed (optional)          |
 
-means 5 vehicles per OD pair.
+---
+# 📊 Outputs
 
-📊 Outputs Generated
-
-Inside results:
-
-results/
- ├── tableIII.csv
- ├── tableIII.tex
- ├── run_log.txt
- └── routes/
-     ├── pct_10/
-     ├── pct_20/
-     └── pct_100/
+results/  
+ ├── tableIII.csv  
+ ├── tableIII.tex  
+ ├── run_log.txt  
+ └── routes/  
+     ├── pct_10/  
+     ├── pct_20/  
+     └── pct_100/  
 
 Each folder contains:
 
-routes_brd.rou.xml
-routes_dijkstra.rou.xml
-🚦 SUMO Simulation per Scenario
+routes_brd.rou.xml  
+routes_dijkstra.rou.xml  
 
-Inside each folder:
+---
 
-results/routes/pct_XX/
+# 🚦 SUMO Simulation
 
-Copy:
+Inside each folder pct_XX copy:
 
-map.net.xml
-mapB.sumo.cfg
-mapD.sumo.cfg
+map.net.xml  
+mapB.sumo.cfg  
+mapD.sumo.cfg  
 
-Then run:
+Run:
 
-🔵 BRD collaborative
-sumo-gui mapB.sumo.cfg
-🟠 Dijkstra individual
-sumo-gui mapD.sumo.cfg
-⚠️ For Each Congestion Scenario
+sumo-gui mapB.sumo.cfg  
+sumo-gui mapD.sumo.cfg  
 
-For each folder:
+---
 
-pct_10, pct_20 ... pct_100
+# 📚 Research Context
 
-Copy:
+Repository supporting:  
+Best Response Dynamics for Collective Route Optimization  
+IEEE Latin America Transactions
 
-map.net.xml
-mapB.sumo.cfg
-mapD.sumo.cfg
+---
 
-Then execute SUMO inside each folder independently.
-
-📦 Files that MUST be in GitHub repository
-Core code
-
-cos_integrado.py
-
-Example inputs
-
-map.net.xml (example)
-
-od_pairs.txt
-
-mapB.sumo.cfg
-
-mapD.sumo.cfg
-
-Documentation
-
-README.md (this file)
-
-tableIII example output (optional)
-
-📚 Research Context
-
-Repository supporting:
-
-Best Response Dynamics for Collective Route Optimization
-IEEE Latin America Transactions (Q1 submission)
-
-📩 Contact
-
-For replication or academic questions:
+# 📩 Contact
 
 lourdes.angulo@cinvestav.mx
