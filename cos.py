@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-COS / BRD pipeline + TABLE III generator (NO SUMO simulation, but writes SUMO route files)
-
+COS / BRD 
 What this script does:
-- (Optional) Convert OSM -> NETXML with netconvert
 - Parse *.net.xml, build graph
 - Sweep multiple congestion percentages (default 10..100 step 10)
 - For each congestion level:
-    * Individual routing (Dijkstra init) total travel time (divided by 60)
-    * Cooperative routing (BRD) total travel time (divided by 60)
+    * Individual routing (Dijkstra init) total travel time
+    * Cooperative routing (BRD) total travel time
     * Diff (%) improvement
     * BRD (I): BRD rounds until Nash (a full round with no changes)
     * Vehicles (≈): background vehicles from congestion + OD vehicles (players)
@@ -28,9 +26,6 @@ NEW (as requested):
 
 Demand control:
 - --veh_per_od N replicates each OD pair N times, so each OD represents N vehicles (players).
-
-BRD order:
-- FIXED 0..N-1 (no shuffle).
 """
 
 from __future__ import annotations
